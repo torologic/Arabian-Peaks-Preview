@@ -37,7 +37,8 @@
   nav.scrolled{background:rgba(255,255,255,.94);backdrop-filter:blur(14px);padding:12px 0;border-bottom:1px solid var(--line);color:var(--navy);box-shadow:0 2px 18px rgba(11,37,69,.06)}
   .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
   .logo{display:flex;align-items:center}
-  .logo-svg{height:46px;width:auto;transition:filter .3s;filter:brightness(0) invert(1)}
+  .logo-svg{height:46px;width:auto;transition:filter .3s;filter:brightness(0) invert(1);direction:ltr}
+  .logo-svg text{direction:ltr;unicode-bidi:bidi-override}
   nav.scrolled .logo-svg{filter:none}
   footer .logo-svg{filter:brightness(0) invert(1);height:42px}
   .logo-svg .lg-txt{font-family:'Exo 2',sans-serif;font-weight:800;font-style:italic;letter-spacing:.5px}
@@ -199,6 +200,30 @@
   .faq-item.open .faq-q .chev{transform:rotate(180deg)}
   .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
   .faq-a p{padding:0 24px 20px;font-size:14px;color:var(--muted)}
+
+  /* ---------- BOOKING ---------- */
+  .booking{padding:105px 0;background:var(--bg)}
+  .bk-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;max-width:960px;margin:0 auto}
+  .bk-cal,.bk-side{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px;box-shadow:0 10px 30px rgba(11,37,69,.06)}
+  .bk-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .bk-head b{font-family:var(--font-en);font-size:17px;color:var(--navy)}
+  .bk-nav{display:flex;gap:8px}
+  .bk-nav button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--navy);font-size:15px;transition:.2s}
+  .bk-nav button:hover{border-color:var(--steel);color:var(--steel)}
+  .bk-days,.bk-dates{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .bk-days span{text-align:center;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;padding:6px 0}
+  .bk-dates button{aspect-ratio:1;border:none;background:none;border-radius:9px;font-size:13.5px;color:var(--text);cursor:pointer;font-family:inherit;transition:.15s}
+  .bk-dates button:hover:not(:disabled){background:#EEF4F9}
+  .bk-dates button:disabled{color:#C3CDD8;cursor:default}
+  .bk-dates button.sel{background:var(--steel);color:#fff;font-weight:700}
+  .bk-side h3{font-size:16px;font-weight:700;margin-bottom:14px}
+  .bk-slots{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:20px}
+  .bk-slots button{padding:11px 8px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13px;cursor:pointer;font-family:inherit;color:var(--text);transition:.15s}
+  .bk-slots button:hover{border-color:var(--steel)}
+  .bk-slots button.sel{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+  .bk-summary{font-size:13.5px;color:var(--muted);min-height:20px;margin-bottom:16px}
+  .bk-summary b{color:var(--navy)}
+  .bk-ok{display:none;background:#EDF7EF;border:1px solid #BFE3C6;color:#1E6B32;border-radius:10px;padding:14px 16px;font-size:13.5px;margin-top:14px}
 
   /* ---------- WHATSAPP FLOAT ---------- */
   .wa-float{position:fixed;bottom:24px;inset-inline-end:24px;z-index:90;width:56px;height:56px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 8px 24px rgba(37,211,102,.4);transition:.25s}
@@ -377,6 +402,35 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ================= BOOKING ================= -->
+<section class="booking" id="booking">
+  <div class="wrap">
+    <div class="sec-head reveal" style="justify-content:center;text-align:center">
+      <div style="max-width:640px;margin:0 auto">
+        <h2 style="max-width:100%" data-i18n="bk_title">Book a Meeting With Our Team</h2>
+        <p style="max-width:100%;margin-top:12px" data-i18n="bk_sub">Pick a date and time that suits you — we'll confirm your appointment within one business day.</p>
+      </div>
+    </div>
+    <div class="bk-grid reveal">
+      <div class="bk-cal">
+        <div class="bk-head">
+          <b id="bkMonth"></b>
+          <div class="bk-nav"><button id="bkPrev" aria-label="Previous month">‹</button><button id="bkNext" aria-label="Next month">›</button></div>
+        </div>
+        <div class="bk-days" id="bkDays"></div>
+        <div class="bk-dates" id="bkDates"></div>
+      </div>
+      <div class="bk-side">
+        <h3 data-i18n="bk_slots_t">Available Times</h3>
+        <div class="bk-slots" id="bkSlots"></div>
+        <div class="bk-summary" id="bkSummary" data-i18n="bk_pick">Select a date and time to continue.</div>
+        <button class="btn btn-navy" id="bkConfirm" style="width:100%;justify-content:center" data-i18n="bk_confirm">Request Appointment</button>
+        <div class="bk-ok" id="bkOk" data-i18n="bk_ok">Request received — our team will contact you to confirm the appointment.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -663,6 +717,12 @@ const AR = {
   fq3_q:"كيف أحجز سفينة أو معدات لتاريخ محدد؟", fq3_a:"أرسل طلب الحجز عبر النموذج أدناه أو تواصل معنا مباشرة عبر واتساب. يؤكد فريقنا التوفر ويقدم عرض السعر خلال يوم عمل واحد.",
   fq4_q:"هل الغواصون والفنيون لديكم معتمدون؟", fq4_a:"فريقنا الفني وغواصونا التجاريون حاصلون على شهادات دولية، وتُنفذ جميع الأعمال وفقاً لأعلى معايير الجودة والسلامة المهنية العالمية.",
   fq5_q:"هل توردون الوقود مباشرة إلى الموقع؟", fq5_a:"نعم — سلسلة لوجستيات الوقود لدينا توصل الديزل عالي الجودة والوقود المتخصص مباشرة إلى سفنكم ومعداتكم في مواقع العملاء، إلى جانب إنشاء محطات التزويد البحرية.",
+  bk_title:"احجز اجتماعاً مع فريقنا",
+  bk_sub:"اختر التاريخ والوقت المناسبين لك — وسنؤكد موعدك خلال يوم عمل واحد.",
+  bk_slots_t:"الأوقات المتاحة",
+  bk_pick:"اختر التاريخ والوقت للمتابعة.",
+  bk_confirm:"طلب موعد",
+  bk_ok:"تم استلام الطلب — سيتواصل معك فريقنا لتأكيد الموعد.",
   opt0:"اختر القسم…", opt1:"الحلول البحرية", opt2:"البنية التحتية البحرية والتوريد", opt3:"الغوص التجاري", opt4:"حلول توريد الوقود",
   ct_send:"إرسال الاستفسار",
   f_about:"خدمات بحرية متكاملة على ساحل البحر الأحمر — نجمع بين الابتكار والموثوقية والخبرة البحرية لصناعة مستقبل العمليات البحرية.",
@@ -687,7 +747,82 @@ langBtn.addEventListener('click',()=>{
   document.querySelectorAll('[data-i18n]').forEach(el=>{ if(dict[el.dataset.i18n]!==undefined) el.innerHTML=dict[el.dataset.i18n]; });
   document.querySelectorAll('[data-i18n-html]').forEach(el=>{ if(dict[el.dataset.i18nHtml]!==undefined) el.innerHTML=dict[el.dataset.i18nHtml]; });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ if(dict[el.dataset.i18nPh]!==undefined) el.placeholder=dict[el.dataset.i18nPh]; });
+  if(typeof renderCal==='function'){ renderCal(); renderSlots(); updateSummary(); }
 });
+
+/* ---------- Booking calendar ---------- */
+const bk = { view: new Date(), selDate: null, selSlot: null };
+bk.view.setDate(1);
+const SLOTS = ["09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"];
+
+function bkLocale(){ return lang==='ar' ? 'ar-SA' : 'en-US'; }
+
+function renderCal(){
+  const loc = bkLocale();
+  const y = bk.view.getFullYear(), m = bk.view.getMonth();
+  document.getElementById('bkMonth').textContent =
+    new Intl.DateTimeFormat(loc,{month:'long',year:'numeric'}).format(bk.view);
+
+  const daysEl = document.getElementById('bkDays');
+  daysEl.innerHTML = '';
+  const base = new Date(2026,2,1); /* a Sunday */
+  for(let i=0;i<7;i++){
+    const d = new Date(base); d.setDate(base.getDate()+i);
+    const s = document.createElement('span');
+    s.textContent = new Intl.DateTimeFormat(loc,{weekday:'short'}).format(d);
+    daysEl.appendChild(s);
+  }
+
+  const datesEl = document.getElementById('bkDates');
+  datesEl.innerHTML = '';
+  const firstDow = new Date(y,m,1).getDay();
+  const dim = new Date(y,m+1,0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+  for(let i=0;i<firstDow;i++) datesEl.appendChild(document.createElement('span'));
+  for(let d=1;d<=dim;d++){
+    const date = new Date(y,m,d);
+    const btn = document.createElement('button');
+    btn.textContent = new Intl.NumberFormat(loc).format(d);
+    const isFri = date.getDay()===5;
+    if(date < today || isFri) btn.disabled = true;
+    if(bk.selDate && date.getTime()===bk.selDate.getTime()) btn.classList.add('sel');
+    btn.addEventListener('click',()=>{ bk.selDate = date; bk.selSlot = null; renderCal(); renderSlots(); updateSummary(); });
+    datesEl.appendChild(btn);
+  }
+}
+
+function renderSlots(){
+  const el = document.getElementById('bkSlots');
+  el.innerHTML = '';
+  SLOTS.forEach(t=>{
+    const b = document.createElement('button');
+    const [h,mm] = t.split(':');
+    const dt = new Date(); dt.setHours(+h,+mm);
+    b.textContent = new Intl.DateTimeFormat(bkLocale(),{hour:'numeric',minute:'2-digit'}).format(dt);
+    if(bk.selSlot===t) b.classList.add('sel');
+    b.addEventListener('click',()=>{ bk.selSlot = t; renderSlots(); updateSummary(); });
+    el.appendChild(b);
+  });
+}
+
+function updateSummary(){
+  const s = document.getElementById('bkSummary');
+  if(bk.selDate && bk.selSlot){
+    const [h,mm] = bk.selSlot.split(':');
+    const dt = new Date(bk.selDate); dt.setHours(+h,+mm);
+    s.innerHTML = '<b>' + new Intl.DateTimeFormat(bkLocale(),{weekday:'long',day:'numeric',month:'long',hour:'numeric',minute:'2-digit'}).format(dt) + '</b>';
+  } else {
+    s.textContent = (lang==='ar') ? AR.bk_pick : EN.bk_pick;
+  }
+}
+
+document.getElementById('bkPrev').addEventListener('click',()=>{ bk.view.setMonth(bk.view.getMonth()-1); renderCal(); });
+document.getElementById('bkNext').addEventListener('click',()=>{ bk.view.setMonth(bk.view.getMonth()+1); renderCal(); });
+document.getElementById('bkConfirm').addEventListener('click',()=>{
+  if(!(bk.selDate && bk.selSlot)){ updateSummary(); return; }
+  document.getElementById('bkOk').style.display = 'block';
+});
+renderCal(); renderSlots();
 
 /* ---------- FAQ accordion ---------- */
 document.querySelectorAll('.faq-q').forEach(btn=>{
