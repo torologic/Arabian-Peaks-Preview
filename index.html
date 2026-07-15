@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arabian Peaks — Integrated Marine Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&family=Tajawal:wght@400;500;700;800&family=Exo+2:ital,wght@1,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-2:#F5F7FA;
+    --navy:#0B2545;
+    --navy-2:#13315C;
+    --steel:#4682B4;
+    --azure:#2E7CB8;
+    --text:#20344B;
+    --muted:#5D6E82;
+    --line:#E4EAF1;
+    --font-en:'Sora','Inter',sans-serif;
+    --font-body:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;line-height:1.65}
+  [dir="rtl"] body,[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,[dir="rtl"] h4,[dir="rtl"] p,[dir="rtl"] a,[dir="rtl"] span,[dir="rtl"] div,[dir="rtl"] button{font-family:'Tajawal',sans-serif}
+  h1,h2,h3,h4{font-family:var(--font-en);line-height:1.18;color:var(--navy)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  section{position:relative}
+  .wrap{width:min(1200px,92%);margin:0 auto}
+  .ic{width:22px;height:22px;stroke:var(--azure);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ---------- NAV ---------- */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s;padding:20px 0;color:#fff}
+  nav.scrolled{background:rgba(255,255,255,.94);backdrop-filter:blur(14px);padding:12px 0;border-bottom:1px solid var(--line);color:var(--navy);box-shadow:0 2px 18px rgba(11,37,69,.06)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .logo{display:flex;align-items:center}
+  .logo-svg{height:46px;width:auto;transition:filter .3s;filter:brightness(0) invert(1)}
+  nav.scrolled .logo-svg{filter:none}
+  footer .logo-svg{filter:brightness(0) invert(1);height:42px}
+  .logo-svg .lg-txt{font-family:'Exo 2',sans-serif;font-weight:800;font-style:italic;letter-spacing:.5px}
+  .nav-links{display:flex;gap:32px;font-size:13.5px;font-weight:500}
+  .nav-links a{opacity:.8;transition:.25s;padding:4px 0;border-bottom:2px solid transparent}
+  .nav-links a:hover,.nav-links a.active{opacity:1;border-bottom-color:var(--steel)}
+  .nav-cta{display:flex;align-items:center;gap:12px}
+  .lang-toggle{border:1.5px solid currentColor;background:transparent;color:inherit;border-radius:8px;padding:8px 15px;font-size:12.5px;cursor:pointer;font-weight:600;transition:.25s;opacity:.9}
+  .lang-toggle:hover{opacity:1}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:8px;font-weight:600;font-size:14px;transition:.25s;cursor:pointer;border:none}
+  .btn-primary{background:var(--steel);color:#fff}
+  .btn-primary:hover{background:var(--azure)}
+  .btn-navy{background:var(--navy);color:#fff}
+  .btn-navy:hover{background:var(--navy-2)}
+  .btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.55)}
+  .btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+
+  /* ---------- HERO ---------- */
+  .hero{min-height:92vh;display:flex;align-items:center;padding:150px 0 110px;color:#fff}
+  .hero-bg{position:absolute;inset:0;z-index:-1}
+  .hero-bg img{width:100%;height:100%;object-fit:cover}
+  .hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,rgba(11,37,69,.92) 30%,rgba(11,37,69,.62) 65%,rgba(11,37,69,.45))}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;margin-bottom:24px;color:#A8CCE8}
+  .eyebrow::before{content:'';width:36px;height:1.5px;background:var(--steel)}
+  .hero h1{font-size:clamp(38px,5.4vw,64px);font-weight:800;max-width:780px;color:#fff}
+  .hero h1 .accent{color:#7FB6DF}
+  .hero p.lead{max-width:560px;color:#C9D8E6;font-size:17px;margin:26px 0 38px;font-weight:300}
+  .hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+
+  /* stats bar overlapping hero bottom */
+  .stats-bar{margin-top:-64px;position:relative;z-index:5}
+  .stats-inner{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 46px rgba(11,37,69,.10);overflow:hidden}
+  .stat{padding:30px 26px;border-inline-end:1px solid var(--line)}
+  .stat:last-child{border-inline-end:none}
+  .stat .num{font-family:var(--font-en);font-size:34px;font-weight:800;color:var(--navy)}
+  .stat .num em{color:var(--steel);font-style:normal}
+  .stat .lbl{font-size:12px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-top:4px}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:52px;flex-wrap:wrap}
+  .sec-head h2{font-size:clamp(28px,3.6vw,42px);font-weight:800;max-width:560px}
+  .sec-head p{color:var(--muted);max-width:420px;font-size:15px;font-weight:400}
+
+  /* ---------- WHY ---------- */
+  .why{padding:110px 0 100px;background:var(--bg)}
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .why-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:32px 26px;transition:.3s}
+  .why-card:hover{box-shadow:0 14px 34px rgba(11,37,69,.09);border-color:#CBD9E6;transform:translateY(-4px)}
+  .why-card .ico{width:50px;height:50px;border-radius:12px;background:#EEF4F9;display:grid;place-items:center;margin-bottom:20px}
+  .why-card h3{font-size:17.5px;font-weight:700;margin-bottom:10px}
+  .why-card p{font-size:13.5px;color:var(--muted)}
+
+  /* ---------- SERVICES ---------- */
+  .services{padding:100px 0;background:var(--bg-2)}
+  .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .svc-card{border-radius:16px;overflow:hidden;position:relative;min-height:420px;display:flex;align-items:flex-end;transition:.3s;cursor:pointer;box-shadow:0 6px 22px rgba(11,37,69,.08)}
+  .svc-card:hover{transform:translateY(-5px);box-shadow:0 22px 48px rgba(11,37,69,.16)}
+  .svc-card img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:.5s}
+  .svc-card:hover img.bg{transform:scale(1.05)}
+  .svc-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,37,69,.08) 0%,rgba(11,37,69,.68) 55%,rgba(11,37,69,.94) 100%)}
+  .svc-body{position:relative;z-index:2;padding:32px;color:#fff}
+  .svc-num{font-family:var(--font-en);font-size:12px;letter-spacing:.26em;color:#9FC5E4;font-weight:700;margin-bottom:9px}
+  .svc-body h3{font-size:25px;font-weight:800;margin-bottom:11px;color:#fff}
+  .svc-body p{color:#D4E1EC;font-size:13.5px;font-weight:300;max-width:480px;margin-bottom:15px}
+  .svc-tags{display:flex;flex-wrap:wrap;gap:8px}
+  .svc-tags span{font-size:11.5px;padding:6px 13px;border-radius:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#EAF2F9}
+  .svc-link{display:inline-flex;align-items:center;gap:8px;margin-top:16px;color:#9FC5E4;font-size:13px;font-weight:600}
+  .svc-link .arr{transition:.25s}
+  .svc-card:hover .svc-link .arr{transform:translateX(4px)}
+  [dir="rtl"] .svc-link .arr{transform:scaleX(-1)}
+  [dir="rtl"] .svc-card:hover .svc-link .arr{transform:translateX(-4px) scaleX(-1)}
+
+  /* ---------- ABOUT ---------- */
+  .about{padding:115px 0;background:var(--bg)}
+  .about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+  .about-img{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 16px 44px rgba(11,37,69,.14)}
+  .about-img img{height:500px;width:100%;object-fit:cover}
+  .about-img .floating{position:absolute;bottom:22px;inset-inline-start:22px;background:rgba(255,255,255,.96);border-radius:12px;padding:18px 24px;display:flex;gap:18px;align-items:center;box-shadow:0 10px 26px rgba(11,37,69,.18)}
+  .about-img .floating .big{font-family:var(--font-en);font-size:34px;font-weight:800;color:var(--steel)}
+  .about-img .floating .txt{font-size:12.5px;color:var(--muted);max-width:150px;line-height:1.45}
+  .about .eyebrow{color:var(--steel)}
+  .about h2{font-size:clamp(28px,3.4vw,40px);font-weight:800;margin-bottom:22px}
+  .about p{color:var(--muted);font-size:15px;margin-bottom:16px}
+  .about-points{margin-top:26px;display:grid;gap:15px}
+  .a-point{display:flex;gap:15px;align-items:flex-start}
+  .a-point .dot{min-width:25px;height:25px;border-radius:50%;background:#EEF4F9;border:1px solid #CBDDEC;display:grid;place-items:center;font-size:11.5px;color:var(--steel);margin-top:3px;font-weight:700}
+  .a-point b{display:block;font-size:14.5px;margin-bottom:2px;color:var(--navy)}
+  .a-point span{font-size:13px;color:var(--muted)}
+
+  /* ---------- BAND ---------- */
+  .band{padding:74px 0;background:var(--navy);color:#fff}
+  .band .wrap{display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  .band h2{font-size:clamp(23px,2.8vw,33px);font-weight:800;max-width:640px;color:#fff}
+  .band h2 em{font-style:normal;color:#8FBCDE}
+
+  /* ---------- CLIENTS ---------- */
+  .clients{padding:105px 0;background:var(--bg)}
+  .client-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+  .client-chip{height:84px;border:1px solid var(--line);border-radius:12px;background:#fff;display:grid;place-items:center;color:var(--muted);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;transition:.25s;text-align:center;padding:0 10px}
+  .client-chip:hover{border-color:#C4D6E6;color:var(--navy);box-shadow:0 8px 20px rgba(11,37,69,.07)}
+  .clients .note{margin-top:24px;font-size:12.5px;color:#93A3B4}
+
+  /* ---------- CONTACT ---------- */
+  .contact{padding:110px 0;background:var(--bg-2)}
+  .contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:56px}
+  .c-info .eyebrow{color:var(--steel)}
+  .c-info h2{font-size:clamp(28px,3.4vw,40px);font-weight:800;margin-bottom:18px}
+  .c-info>p{color:var(--muted);margin-bottom:34px;max-width:420px}
+  .c-item{display:flex;gap:16px;margin-bottom:24px;align-items:flex-start}
+  .c-item .icobox{min-width:46px;height:46px;border-radius:11px;background:#fff;border:1px solid var(--line);display:grid;place-items:center}
+  .c-item b{display:block;font-size:14.5px;margin-bottom:3px;color:var(--navy)}
+  .c-item span{font-size:13.5px;color:var(--muted)}
+  .c-form{background:#fff;border:1px solid var(--line);border-radius:16px;padding:40px;box-shadow:0 12px 34px rgba(11,37,69,.07)}
+  .c-form h3{font-size:19px;font-weight:700;margin-bottom:24px}
+  .f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .c-form input,.c-form select,.c-form textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:9px;padding:13px 16px;color:var(--text);font-size:14px;font-family:inherit;transition:.2s}
+  .c-form textarea{min-height:115px;resize:vertical;margin-bottom:14px}
+  .c-form select{appearance:none;margin-bottom:14px;color:var(--muted)}
+  .c-form input:focus,.c-form textarea:focus,.c-form select:focus{outline:none;border-color:var(--steel);background:#fff}
+  .c-form ::placeholder{color:#9AA9BA}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--navy);color:#fff;padding:66px 0 28px}
+  .f-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:42px;margin-bottom:46px}
+  footer .logo .mark{background:rgba(255,255,255,.12)}
+  .f-grid h4{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#fff;margin-bottom:18px;font-weight:700}
+  .f-grid a,.f-grid p{display:block;color:#9DB2C8;font-size:13.5px;margin-bottom:10px;font-weight:300;transition:.2s}
+  .f-grid a:hover{color:#fff}
+  .f-bottom{border-top:1px solid rgba(255,255,255,.12);padding-top:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:#8CA2B9}
+  .f-bottom b{color:#C3D6E8;font-weight:600}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.on{opacity:1;transform:none}
+
+  @media(max-width:1020px){
+    .why-grid{grid-template-columns:repeat(2,1fr)}
+    .svc-grid{grid-template-columns:1fr}
+    .about-grid,.contact-grid{grid-template-columns:1fr}
+    .client-strip{grid-template-columns:repeat(3,1fr)}
+    .f-grid{grid-template-columns:1fr 1fr}
+    .nav-links{display:none}
+    .stats-inner{grid-template-columns:repeat(2,1fr)}
+    .stat{border-bottom:1px solid var(--line)}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<nav id="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="logo" aria-label="Arabian Peaks">
+      <svg class="logo-svg" viewBox="0 0 520 124" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#2FA3DC" d="M118 16 Q158 4 197 9 L189 22 Q152 17 127 24 Q118 22 118 16Z"/>
+        <path fill="#1B7FC4" d="M52 48 Q128 20 199 28 L189 44 Q130 38 78 56 Q60 58 52 48Z"/>
+        <path fill="#16395D" d="M4 96 Q92 46 198 54 L215 62 L182 78 Q108 74 42 104 Q14 112 4 96Z"/>
+        <text class="lg-txt" x="212" y="50" font-size="50" fill="#16395D">ARABIAN</text>
+        <text class="lg-txt" x="244" y="108" font-size="54" fill="#1B7FC4">PEAKS</text>
+      </svg>
+    </a>
+    <div class="nav-links">
+      <a href="#home" class="active" data-i18n="nav_home">Home</a>
+      <a href="#services" data-i18n="nav_services">Our Divisions</a>
+      <a href="#about" data-i18n="nav_about">About Us</a>
+      <a href="#clients" data-i18n="nav_clients">Clients &amp; Partners</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="lang-toggle" id="langBtn">عربي</button>
+      <a href="#contact" class="btn btn-primary" style="padding:11px 20px" data-i18n="nav_cta">Request a Quote</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <div class="hero-bg"><img src="https://img1.wsimg.com/isteam/ip/d7daa400-6023-405b-9152-1beac414a24c/AMAALA-copy-1024x768.jpg/:/rs=w:1980" alt="Arabian Peaks fleet on the Red Sea"></div>
+  <div class="wrap">
+    <div class="eyebrow" data-i18n="hero_eyebrow">Umluj · Red Sea Coast · Saudi Arabia</div>
+    <h1 data-i18n-html="hero_title">Your Single Source for<br><span class="accent">Integrated Marine</span> Operations</h1>
+    <p class="lead" data-i18n="hero_lead">From marine transport and vessel manufacturing to commercial diving, infrastructure, and fuel supply — Arabian Peaks delivers end-to-end maritime solutions powered entirely by owned assets.</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn btn-primary" data-i18n="hero_btn1">Explore Our Divisions</a>
+      <a href="#contact" class="btn btn-outline" data-i18n="hero_btn2">Talk to Our Team</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATS ================= -->
+<div class="stats-bar">
+  <div class="wrap">
+    <div class="stats-inner">
+      <div class="stat"><div class="num"><span class="count" data-to="4">0</span></div><div class="lbl" data-i18n="stat1">Integrated Divisions</div></div>
+      <div class="stat"><div class="num"><span class="count" data-to="5">0</span><em>+</em></div><div class="lbl" data-i18n="stat2">Years of Growth</div></div>
+      <div class="stat"><div class="num"><span class="count" data-to="100">0</span><em>%</em></div><div class="lbl" data-i18n="stat3">Owned Fleet &amp; Assets</div></div>
+      <div class="stat"><div class="num"><span class="count" data-to="30">0</span><em>+</em></div><div class="lbl" data-i18n="stat4">Clients &amp; Partners</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= WHY ================= -->
+<section class="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 data-i18n="why_title">Why Leading Operators Choose Arabian Peaks</h2>
+      <p data-i18n="why_sub">One partner. Owned assets. International standards. Zero delays.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="ico"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg></div>
+        <h3 data-i18n="why1_t">Single Source</h3>
+        <p data-i18n="why1_p">Eliminate the need to deal with multiple suppliers and contractors. We are your single point of contact for all maritime and construction project needs.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="ico"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3 data-i18n="why2_t">Safety &amp; Standards</h3>
+        <p data-i18n="why2_p">All work — from diving operations to contracting — is executed in accordance with the highest international quality and occupational safety standards.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="ico"><svg class="ic" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3 data-i18n="why3_t">Fast-Track Execution</h3>
+        <p data-i18n="why3_p">We own our fleet, maintenance center, and supply warehouses — guaranteeing zero delays in starting work or providing essential supplies.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="ico"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M8.5 13 7 22l5-3 5 3-1.5-9"/></svg></div>
+        <h3 data-i18n="why4_t">Certified Expertise</h3>
+        <p data-i18n="why4_p">Our technical team and divers hold international certifications, ensuring every task is executed by the best specialists in the field.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 data-i18n="svc_title">Four Divisions. One Integrated Force.</h2>
+      <p data-i18n="svc_sub">Every division is backed by owned assets and certified specialists — ready for deployment at any time.</p>
+    </div>
+    <div class="svc-grid">
+
+      <div class="svc-card reveal">
+        <img class="bg" src="https://img1.wsimg.com/isteam/ip/d7daa400-6023-405b-9152-1beac414a24c/AMAALA-copy-1024x768.jpg/:/rs=w:1240" alt="Marine Solutions">
+        <div class="svc-body">
+          <div class="svc-num">01 — <span data-i18n="svc1_k">DIVISION</span></div>
+          <h3 data-i18n="svc1_t">Marine Solutions</h3>
+          <p data-i18n="svc1_p">Integrated marine solutions including passenger and equipment transport, vessel maintenance, and boat manufacturing from our advanced facility in Egypt.</p>
+          <div class="svc-tags">
+            <span data-i18n="svc1_tag1">Maritime Transport</span>
+            <span data-i18n="svc1_tag2">Marine Maintenance</span>
+            <span data-i18n="svc1_tag3">Boat &amp; Yacht Manufacturing</span>
+          </div>
+          <span class="svc-link" data-i18n-html="svc_link">Explore Division <span class="arr">→</span></span>
+        </div>
+      </div>
+
+      <div class="svc-card reveal">
+        <img class="bg" src="https://img1.wsimg.com/isteam/ip/d7daa400-6023-405b-9152-1beac414a24c/licensed-image%20(1).jpeg/:/rs=w:1240" alt="Marine Infrastructure">
+        <div class="svc-body">
+          <div class="svc-num">02 — <span data-i18n="svc2_k">DIVISION</span></div>
+          <h3 data-i18n="svc2_t">Marine Infrastructure &amp; Supply</h3>
+          <p data-i18n="svc2_p">Complete solutions for onshore and offshore construction — docks, jetties, ports, and desalination plants — powered by owned warehouses and heavy machinery.</p>
+          <div class="svc-tags">
+            <span data-i18n="svc2_tag1">Marine Construction</span>
+            <span data-i18n="svc2_tag2">Equipment Rental</span>
+            <span data-i18n="svc2_tag3">Tools &amp; Materials Supply</span>
+          </div>
+          <span class="svc-link" data-i18n-html="svc_link">Explore Division <span class="arr">→</span></span>
+        </div>
+      </div>
+
+      <div class="svc-card reveal">
+        <img class="bg" src="https://img1.wsimg.com/isteam/ip/d7daa400-6023-405b-9152-1beac414a24c/diving.png/:/rs=w:1240" alt="Commercial Diving">
+        <div class="svc-body">
+          <div class="svc-num">03 — <span data-i18n="svc3_k">DIVISION</span></div>
+          <h3 data-i18n="svc3_t">Commercial Diving</h3>
+          <p data-i18n="svc3_p">Certified commercial divers and advanced dive systems operating safely at varying depths — trusted by public and private sectors for every underwater mission.</p>
+          <div class="svc-tags">
+            <span data-i18n="svc3_tag1">Marine Survey &amp; Buoys</span>
+            <span data-i18n="svc3_tag2">Navigation &amp; Mooring</span>
+            <span data-i18n="svc3_tag3">Pontoons</span>
+            <span data-i18n="svc3_tag4">Underwater Ship Services</span>
+          </div>
+          <span class="svc-link" data-i18n-html="svc_link">Explore Division <span class="arr">→</span></span>
+        </div>
+      </div>
+
+      <div class="svc-card reveal">
+        <img class="bg" src="https://img1.wsimg.com/isteam/ip/d7daa400-6023-405b-9152-1beac414a24c/Gemini_Generated_Image_6r250h6r250h6r25.png/:/rs=w:1240" alt="Fuel Supply Solutions">
+        <div class="svc-body">
+          <div class="svc-num">04 — <span data-i18n="svc4_k">DIVISION</span></div>
+          <h3 data-i18n="svc4_t">Fuel Supply Solutions</h3>
+          <p data-i18n="svc4_p">Comprehensive fuel logistics — marine fueling stations and on-site delivery of high-quality diesel and specialized fuel, directly to your vessels and equipment.</p>
+          <div class="svc-tags">
+            <span data-i18n="svc4_tag1">Marine Fueling Stations</span>
+            <span data-i18n="svc4_tag2">On-Site Diesel Delivery</span>
+            <span data-i18n="svc4_tag3">Fuel Logistics</span>
+          </div>
+          <span class="svc-link" data-i18n-html="svc_link">Explore Division <span class="arr">→</span></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-img reveal">
+      <img src="https://img1.wsimg.com/isteam/ip/d7daa400-6023-405b-9152-1beac414a24c/Gemini_Generated_Image_owha3iowha3iowha.png/:/rs=w:1240" alt="Arabian Peaks operations">
+      <div class="floating">
+        <div class="big">5+</div>
+        <div class="txt" data-i18n="about_float">Years of rapid growth across multiple regions</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="eyebrow" data-i18n="about_eyebrow">Where the Ocean Meets Innovation</div>
+      <h2 data-i18n="about_title">Shaping the Future of Marine Services</h2>
+      <p data-i18n="about_p1">At Arabian Peaks, we are driven by a vision to redefine marine services through innovation, reliability, and sustainability. Our commitment goes beyond operations — we aim to create lasting value for our clients and the marine environment alike.</p>
+      <p data-i18n="about_p2">Founded five years ago, Arabian Peaks has rapidly grown into a trusted name in the marine services industry, expanding across multiple regions with end-to-end services — from transport and maintenance to diving, construction, and fuel supply.</p>
+      <div class="about-points">
+        <div class="a-point"><div class="dot">✓</div><div><b data-i18n="ap1_t">Innovation-Driven Manufacturing</b><span data-i18n="ap1_p">High-tech boatbuilding facility in Egypt producing durable, high-performance vessels.</span></div></div>
+        <div class="a-point"><div class="dot">✓</div><div><b data-i18n="ap2_t">Public &amp; Private Sector Trust</b><span data-i18n="ap2_p">Serving government entities, port authorities, and companies in logistics, construction, and energy.</span></div></div>
+        <div class="a-point"><div class="dot">✓</div><div><b data-i18n="ap3_t">Environmentally Conscious Operations</b><span data-i18n="ap3_p">Advanced technology and responsible practices keeping marine operations efficient and safe.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BAND ================= -->
+<section class="band">
+  <div class="wrap reveal">
+    <h2 data-i18n-html="band_title">Need a partner that <em>owns its fleet, machinery, and warehouses</em>?</h2>
+    <a href="#contact" class="btn btn-primary" data-i18n="band_btn">Start Your Project</a>
+  </div>
+</section>
+
+<!-- ================= CLIENTS ================= -->
+<section class="clients" id="clients">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 data-i18n="cl_title">Building Trust Across Every Wave</h2>
+      <p data-i18n="cl_sub">Long-standing relationships with clients and partners across the marine and offshore industries.</p>
+    </div>
+    <div class="client-strip reveal">
+      <div class="client-chip" data-i18n="cl_chip1">Government Entities</div>
+      <div class="client-chip" data-i18n="cl_chip2">Port Authorities</div>
+      <div class="client-chip" data-i18n="cl_chip3">Logistics Sector</div>
+      <div class="client-chip" data-i18n="cl_chip4">Construction Sector</div>
+      <div class="client-chip" data-i18n="cl_chip5">Energy Sector</div>
+      <div class="client-chip" data-i18n="cl_chip6">Int'l Manufacturers</div>
+    </div>
+    <p class="note reveal" data-i18n="cl_note">Client &amp; partner logos will be placed here from your existing brand gallery.</p>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="c-info reveal">
+      <div class="eyebrow" data-i18n="ct_eyebrow">Get In Touch</div>
+      <h2 data-i18n="ct_title">Let's Discuss Your Next Marine Project</h2>
+      <p data-i18n="ct_sub">Our team responds within one business day. Visit us during business hours or send an inquiry below.</p>
+      <div class="c-item"><div class="icobox"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><b data-i18n="ct_addr_t">Head Office</b><span data-i18n="ct_addr">Al Wahah Street, Ash Shifa Dist., Building No. 4062, Umluj, Kingdom of Saudi Arabia</span></div></div>
+      <div class="c-item"><div class="icobox"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></div><div><b data-i18n="ct_mail_t">Email</b><span>info@arabianpeaks.com</span></div></div>
+      <div class="c-item"><div class="icobox"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><b data-i18n="ct_hours_t">Business Hours</b><span data-i18n="ct_hours">Saturday – Thursday, 9:00 AM – 5:00 PM</span></div></div>
+      <div class="c-item"><div class="icobox"><svg class="ic" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><b data-i18n="ct_wa_t">Phone / WhatsApp</b><span data-i18n="ct_wa">Direct line for urgent operational inquiries</span></div></div>
+    </div>
+    <div class="c-form reveal">
+      <h3 data-i18n="ct_form_t">Request a Quotation</h3>
+      <div class="f-row">
+        <input type="text" data-i18n-ph="ph_name" placeholder="Full Name">
+        <input type="text" data-i18n-ph="ph_company" placeholder="Company">
+      </div>
+      <div class="f-row">
+        <input type="email" data-i18n-ph="ph_email" placeholder="Email Address">
+        <input type="tel" data-i18n-ph="ph_phone" placeholder="Phone / WhatsApp">
+      </div>
+      <select>
+        <option data-i18n="opt0">Select a Division…</option>
+        <option data-i18n="opt1">Marine Solutions</option>
+        <option data-i18n="opt2">Marine Infrastructure &amp; Supply</option>
+        <option data-i18n="opt3">Commercial Diving</option>
+        <option data-i18n="opt4">Fuel Supply Solutions</option>
+      </select>
+      <textarea data-i18n-ph="ph_msg" placeholder="Tell us about your project…"></textarea>
+      <button class="btn btn-navy" style="width:100%;justify-content:center" data-i18n="ct_send">Send Inquiry</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <div class="logo" style="margin-bottom:18px">
+          <svg class="logo-svg" viewBox="0 0 520 124" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#2FA3DC" d="M118 16 Q158 4 197 9 L189 22 Q152 17 127 24 Q118 22 118 16Z"/>
+            <path fill="#1B7FC4" d="M52 48 Q128 20 199 28 L189 44 Q130 38 78 56 Q60 58 52 48Z"/>
+            <path fill="#16395D" d="M4 96 Q92 46 198 54 L215 62 L182 78 Q108 74 42 104 Q14 112 4 96Z"/>
+            <text class="lg-txt" x="212" y="50" font-size="50" fill="#16395D">ARABIAN</text>
+            <text class="lg-txt" x="244" y="108" font-size="54" fill="#1B7FC4">PEAKS</text>
+          </svg>
+        </div>
+        <p data-i18n="f_about">Integrated marine services on the Red Sea coast — combining innovation, reliability, and marine expertise to shape the future of maritime operations.</p>
+      </div>
+      <div>
+        <h4 data-i18n="f_div">Divisions</h4>
+        <a href="#services" data-i18n="svc1_t">Marine Solutions</a>
+        <a href="#services" data-i18n="svc2_t">Marine Infrastructure &amp; Supply</a>
+        <a href="#services" data-i18n="svc3_t">Commercial Diving</a>
+        <a href="#services" data-i18n="svc4_t">Fuel Supply Solutions</a>
+      </div>
+      <div>
+        <h4 data-i18n="f_co">Company</h4>
+        <a href="#about" data-i18n="nav_about">About Us</a>
+        <a href="#clients" data-i18n="nav_clients">Clients &amp; Partners</a>
+        <a href="#contact" data-i18n="nav_contact">Contact</a>
+      </div>
+      <div>
+        <h4 data-i18n="f_ct">Contact</h4>
+        <p data-i18n="f_addr">Umluj, Kingdom of Saudi Arabia</p>
+        <p>info@arabianpeaks.com</p>
+        <p>www.arabianpeaks.com</p>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span data-i18n="f_rights">© 2026 Arabian Peaks Co. — All Rights Reserved.</span>
+      <span data-i18n-html="f_credit">Website by <b>Torologic</b> — torologic.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- translations ---------- */
+const AR = {
+  tagline:"الخدمات البحرية",
+  nav_home:"الرئيسية", nav_services:"أقسامنا", nav_about:"من نحن", nav_clients:"عملاؤنا وشركاؤنا", nav_contact:"اتصل بنا", nav_cta:"اطلب عرض سعر",
+  hero_eyebrow:"أملج · ساحل البحر الأحمر · المملكة العربية السعودية",
+  hero_title:'مصدرك الواحد لجميع<br><span class="accent">العمليات البحرية</span> المتكاملة',
+  hero_lead:"من النقل البحري وتصنيع القوارب إلى الغوص التجاري والبنية التحتية وتوريد الوقود — تقدم القمم العربية حلولاً بحرية متكاملة مدعومة بأصول مملوكة بالكامل.",
+  hero_btn1:"استكشف أقسامنا", hero_btn2:"تحدث مع فريقنا",
+  stat1:"أقسام متكاملة", stat2:"سنوات من النمو", stat3:"أسطول وأصول مملوكة", stat4:"عميل وشريك",
+  why_title:"لماذا يختار كبار المشغلين القمم العربية؟",
+  why_sub:"شريك واحد. أصول مملوكة. معايير عالمية. صفر تأخير.",
+  why1_t:"مصدر واحد", why1_p:"لا حاجة للتعامل مع عدة موردين ومقاولين. نحن نقطة الاتصال الوحيدة لجميع احتياجات مشاريعك البحرية والإنشائية.",
+  why2_t:"السلامة والمعايير", why2_p:"جميع الأعمال — من عمليات الغوص إلى المقاولات — تُنفذ وفقاً لأعلى معايير الجودة والسلامة المهنية العالمية.",
+  why3_t:"تنفيذ سريع", why3_p:"نمتلك أسطولنا ومركز الصيانة ومستودعات التوريد — مما يضمن عدم وجود أي تأخير في بدء العمل أو توفير الإمدادات.",
+  why4_t:"خبرات معتمدة", why4_p:"فريقنا الفني وغواصونا حاصلون على شهادات دولية، مما يضمن تنفيذ كل مهمة على يد أفضل المتخصصين.",
+  svc_title:"أربعة أقسام. قوة واحدة متكاملة.",
+  svc_sub:"كل قسم مدعوم بأصول مملوكة ومتخصصين معتمدين — جاهزون للانتشار في أي وقت.",
+  svc1_k:"القسم", svc2_k:"القسم", svc3_k:"القسم", svc4_k:"القسم",
+  svc1_t:"الحلول البحرية", svc1_p:"حلول بحرية متكاملة تشمل نقل الركاب والمعدات، وصيانة السفن، وتصنيع القوارب في منشأتنا المتطورة في مصر.",
+  svc1_tag1:"النقل البحري", svc1_tag2:"الصيانة البحرية", svc1_tag3:"تصنيع القوارب واليخوت",
+  svc2_t:"البنية التحتية البحرية والتوريد", svc2_p:"حلول كاملة لمشاريع الإنشاء البرية والبحرية — أرصفة وموانئ ومحطات تحلية — مدعومة بمستودعات ومعدات ثقيلة مملوكة.",
+  svc2_tag1:"الإنشاءات البحرية", svc2_tag2:"تأجير المعدات", svc2_tag3:"توريد الأدوات والمواد",
+  svc3_t:"الغوص التجاري", svc3_p:"غواصون تجاريون معتمدون وأنظمة غوص متقدمة تعمل بأمان على أعماق متفاوتة — موثوقون من القطاعين العام والخاص.",
+  svc3_tag1:"المسح البحري والعوامات", svc3_tag2:"الملاحة والإرساء", svc3_tag3:"العوامات والبنطونات", svc3_tag4:"خدمات السفن تحت الماء",
+  svc4_t:"حلول توريد الوقود", svc4_p:"خدمات لوجستية شاملة للوقود — محطات تزويد بحرية وتوصيل الديزل عالي الجودة والوقود المتخصص مباشرة إلى سفنكم ومعداتكم.",
+  svc4_tag1:"محطات التزويد البحرية", svc4_tag2:"توصيل الديزل للموقع", svc4_tag3:"لوجستيات الوقود",
+  svc_link:'استكشف القسم <span class="arr">→</span>',
+  about_eyebrow:"حيث يلتقي المحيط بالابتكار",
+  about_title:"نصنع مستقبل الخدمات البحرية",
+  about_p1:"في القمم العربية، تقودنا رؤية لإعادة تعريف الخدمات البحرية من خلال الابتكار والموثوقية والاستدامة. التزامنا يتجاوز العمليات — نهدف لخلق قيمة دائمة لعملائنا وللبيئة البحرية على حد سواء.",
+  about_p2:"تأسست القمم العربية قبل خمس سنوات، ونمت بسرعة لتصبح اسماً موثوقاً في صناعة الخدمات البحرية، وتوسعت عملياتها عبر مناطق متعددة بخدمات متكاملة — من النقل والصيانة إلى الغوص والإنشاءات وتوريد الوقود.",
+  about_float:"سنوات من النمو المتسارع عبر مناطق متعددة",
+  ap1_t:"تصنيع مدفوع بالابتكار", ap1_p:"منشأة متطورة لبناء القوارب في مصر تنتج سفناً متينة وعالية الأداء.",
+  ap2_t:"ثقة القطاعين العام والخاص", ap2_p:"نخدم الجهات الحكومية وهيئات الموانئ وشركات اللوجستيات والإنشاءات والطاقة.",
+  ap3_t:"عمليات صديقة للبيئة", ap3_p:"تقنيات متقدمة وممارسات مسؤولة تحافظ على كفاءة وسلامة العمليات البحرية.",
+  band_title:'تبحث عن شريك <em>يمتلك أسطوله ومعداته ومستودعاته</em>؟',
+  band_btn:"ابدأ مشروعك",
+  cl_title:"نبني الثقة عبر كل موجة",
+  cl_sub:"علاقات راسخة مع العملاء والشركاء في الصناعات البحرية والبحرية المفتوحة.",
+  cl_chip1:"جهات حكومية", cl_chip2:"هيئات الموانئ", cl_chip3:"قطاع اللوجستيات", cl_chip4:"قطاع الإنشاءات", cl_chip5:"قطاع الطاقة", cl_chip6:"مصنّعون عالميون",
+  cl_note:"سيتم وضع شعارات العملاء والشركاء هنا من معرض علامتكم الحالي.",
+  ct_eyebrow:"تواصل معنا",
+  ct_title:"لنناقش مشروعك البحري القادم",
+  ct_sub:"يرد فريقنا خلال يوم عمل واحد. تفضل بزيارتنا خلال ساعات العمل أو أرسل استفسارك أدناه.",
+  ct_addr_t:"المكتب الرئيسي", ct_addr:"شارع الواحة، حي الشفاء، مبنى رقم ٤٠٦٢، أملج، المملكة العربية السعودية",
+  ct_mail_t:"البريد الإلكتروني", ct_hours_t:"ساعات العمل", ct_hours:"السبت – الخميس، ٩:٠٠ ص – ٥:٠٠ م",
+  ct_wa_t:"الهاتف / واتساب", ct_wa:"خط مباشر للاستفسارات التشغيلية العاجلة",
+  ct_form_t:"اطلب عرض سعر",
+  ph_name:"الاسم الكامل", ph_company:"الشركة", ph_email:"البريد الإلكتروني", ph_phone:"الهاتف / واتساب", ph_msg:"أخبرنا عن مشروعك…",
+  opt0:"اختر القسم…", opt1:"الحلول البحرية", opt2:"البنية التحتية البحرية والتوريد", opt3:"الغوص التجاري", opt4:"حلول توريد الوقود",
+  ct_send:"إرسال الاستفسار",
+  f_about:"خدمات بحرية متكاملة على ساحل البحر الأحمر — نجمع بين الابتكار والموثوقية والخبرة البحرية لصناعة مستقبل العمليات البحرية.",
+  f_div:"الأقسام", f_co:"الشركة", f_ct:"التواصل",
+  f_addr:"أملج، المملكة العربية السعودية",
+  f_rights:"© ٢٠٢٦ شركة القمم العربية — جميع الحقوق محفوظة.",
+  f_credit:'تصميم وتطوير <b>تورولوجيك</b> — torologic.com'
+};
+const EN = {};
+document.querySelectorAll('[data-i18n]').forEach(el=>{EN[el.dataset.i18n]=el.innerHTML});
+document.querySelectorAll('[data-i18n-html]').forEach(el=>{EN[el.dataset.i18nHtml]=el.innerHTML});
+document.querySelectorAll('[data-i18n-ph]').forEach(el=>{EN[el.dataset.i18nPh]=el.placeholder});
+
+let lang='en';
+const langBtn=document.getElementById('langBtn');
+langBtn.addEventListener('click',()=>{
+  lang = lang==='en' ? 'ar' : 'en';
+  const dict = lang==='ar' ? AR : EN;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
+  langBtn.textContent = lang==='ar' ? 'EN' : 'عربي';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ if(dict[el.dataset.i18n]!==undefined) el.innerHTML=dict[el.dataset.i18n]; });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{ if(dict[el.dataset.i18nHtml]!==undefined) el.innerHTML=dict[el.dataset.i18nHtml]; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ if(dict[el.dataset.i18nPh]!==undefined) el.placeholder=dict[el.dataset.i18nPh]; });
+});
+
+/* ---------- nav scroll ---------- */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{ nav.classList.toggle('scrolled', scrollY>40); });
+
+/* ---------- reveal ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('on'); io.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- counters (smooth ease-out, no jitter) ---------- */
+function animateCount(el){
+  const to = +el.dataset.to;
+  const dur = 2600;
+  let start = null, last = -1;
+  function step(ts){
+    if(!start) start = ts;
+    const p = Math.min((ts - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 4);           /* easeOutQuart */
+    const val = Math.round(to * eased);
+    if(val !== last){ el.textContent = val; last = val; }
+    if(p < 1) requestAnimationFrame(step);
+    else el.textContent = to;
+  }
+  requestAnimationFrame(step);
+}
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting) return;
+  animateCount(e.target);
+  cio.unobserve(e.target);
+}),{threshold:.6});
+document.querySelectorAll('.count').forEach(el=>cio.observe(el));
+</script>
+</body>
+</html>
